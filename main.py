@@ -1,6 +1,7 @@
 import os
 
-root_path = "C:\\Users\\Dilanka\\Desktop\\Projects\\Documents"
+# ENter your folder path in root_path
+root_path = "C:\\Users\\Name\\Desktop\\Projects\\Documents"
 
 file_paths = []
 
