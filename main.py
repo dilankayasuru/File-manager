@@ -27,7 +27,7 @@ def updatePathList(pathList):
 def directoryManager(filePath, dirName, logfilePath):
 
     with logfilePath.open(mode="a") as logfile:
-        logfile.write(f"\nOld File Location: \n{filePath}")
+        logfile.write(f"      \nOld File Location: \n{filePath}")
 
     parentname = filePath.parent
     fileName = filePath.name
@@ -36,13 +36,16 @@ def directoryManager(filePath, dirName, logfilePath):
         if not Path(parentname / dirName).exists():
             Path.mkdir(parentname / dirName)
             filePath.replace(newPath)
+            print(f"      {fileName} Moved to {newPath.parent.name}...\n")
             with logfilePath.open(mode="a") as logfile:
                 logfile.write(f"\nNew {dirName} Directory created...\nFile Name: {fileName}\nNew file Location: \n{newPath}\n")
         else:
             filePath.replace(newPath)
+            print(f"      {fileName} Moved to {newPath.parent.name}...\n")
             with logfilePath.open(mode="a") as logfile:
                 logfile.write(f"\n{fileName} File Moved...\nNew file Location: \n{newPath}\n")
     else:
+        print(f"      {fileName} did not move...\n")
         with logfilePath.open(mode="a") as logfile:
             logfile.write(f"\nFile did not move to a new directory\n")
     
@@ -59,11 +62,13 @@ def main():
     
     time = datetime.now().strftime("%d-%m-%Y %H:%M:%S")
 
-    with logfilePath.open(mode="w") as logfile:
+    with logfilePath.open(mode="a") as logfile:
         logfile.write(f"Time: {time} \nDirectory Location: {root_path.name}\n")
- 
+
+    count = 0
     for filePath in pathList:
-        
+        count += 1
+        print(f"{count:>4}. {filePath.name} Checking...")
         fileExt = filePath.suffix[1:]
 
         if fileExt == "docx":
@@ -90,7 +95,10 @@ def main():
             dirName = "Other Files"
         
         directoryManager(filePath, dirName, logfilePath)
-
-        print("Files organized...")
+        
+    
+    print(f"\n{count} Files Checked\n")
+    with logfilePath.open(mode="a") as logfile:
+        logfile.write(f"\n{count} files organized")
 
 main()
